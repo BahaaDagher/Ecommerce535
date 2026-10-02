@@ -1,0 +1,1 @@
+﻿global using Ecommerce535.Models;
