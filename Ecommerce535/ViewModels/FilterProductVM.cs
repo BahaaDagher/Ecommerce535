@@ -8,6 +8,7 @@
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public bool IsHot { get; set; }
+        public bool IsLowQuanity { get; set; }
         public int page { get; set; } = 1; 
     }
 }

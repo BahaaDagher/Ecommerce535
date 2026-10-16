@@ -8,7 +8,7 @@ namespace Ecommerce535.Models
         public string Name { get; set; }
         public string? Description { get; set; }
         public bool Status { get; set; }
-        public string MainImg { get; set; }
+        public string MainImg { get; set; } = "default.jpg";
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public int Quantity { get; set; }

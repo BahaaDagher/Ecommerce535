@@ -8,6 +8,8 @@
             <a href="/Admin/Categories/Create" class="btn btn-success">Create</a>
         </div>
     </div>
+    @* <h3>@Context.Request.Cookies["Successful_Notification"]</h3> *@
+    @* <h3>@TempData["Successful_Notification"]</h3> *@
 
     <div class="row">
         <div class="col-12">
@@ -57,6 +59,10 @@
         </div>
     </div>
 </div>
+@section Scripts {  
+   <partial name="_NotificationPartial"/>
+}
+
 
 <script>
 
