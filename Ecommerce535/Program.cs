@@ -1,3 +1,8 @@
+using Ecommerce535.Data;
+using Ecommerce535.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 namespace Ecommerce535
 {
     public class Program
@@ -9,7 +14,26 @@ namespace Ecommerce535
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+            var connectionString =
+                builder.Configuration.GetConnectionString("DefaultConnection")
+                    ?? throw new InvalidOperationException("Connection string"
+                    + "'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            }); 
+
+            // AddTransient && AddScoped && AddSinglton
+
+
+            builder.Services.AddScoped<IRepository<Product>, Repository<Product>>();
+            builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
+            builder.Services.AddScoped<IRepository<Brand>, Repository<Brand>>();
+            builder.Services.AddScoped<IProductSubImageRepository , ProductSubImageRepository>();
+            builder.Services.AddScoped<IProductColorRepository , ProductColorRepository>();
+
+           var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
