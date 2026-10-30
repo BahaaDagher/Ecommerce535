@@ -1,5 +1,8 @@
 using Ecommerce535.Data;
 using Ecommerce535.Repositories;
+using Ecommerce535.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -22,16 +25,27 @@ namespace Ecommerce535
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
-            }); 
+            });
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true; 
+                options.SignIn.RequireConfirmedEmail = true;
+                //options.Lockout.MaxFailedAccessAttempts
+                //options.Password.RequiredLength = 8; 
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
             // AddTransient && AddScoped && AddSinglton
 
 
             builder.Services.AddScoped<IRepository<Product>, Repository<Product>>();
             builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
             builder.Services.AddScoped<IRepository<Brand>, Repository<Brand>>();
+            builder.Services.AddScoped<IRepository<ApplicationUserOtp>, Repository<ApplicationUserOtp>>();
             builder.Services.AddScoped<IProductSubImageRepository , ProductSubImageRepository>();
             builder.Services.AddScoped<IProductColorRepository , ProductColorRepository>();
+            builder.Services.AddTransient< IEmailSender,EmailSender>();
 
            var app = builder.Build();
 
@@ -51,7 +65,7 @@ namespace Ecommerce535
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{area=Admin}/{controller=Products}/{action=Index}/{id?}")
+                pattern: "{area=Identity}/{controller=Account}/{action=Register}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

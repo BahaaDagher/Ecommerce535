@@ -16,7 +16,7 @@ namespace Ecommerce535.Areas.Customer.Controllers
         {
             _context = context;
         }
-
+            
         public IActionResult Index(FilterProductVM filter)
         {
             var products = _context.Products.AsQueryable();
