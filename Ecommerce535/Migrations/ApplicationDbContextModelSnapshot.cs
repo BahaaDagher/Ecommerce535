@@ -153,6 +153,24 @@ namespace Ecommerce535.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("Ecommerce535.Models.Cart", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Carts");
+                });
+
             modelBuilder.Entity("Ecommerce535.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -397,6 +415,25 @@ namespace Ecommerce535.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Ecommerce535.Models.Cart", b =>
+                {
+                    b.HasOne("Ecommerce535.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecommerce535.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommerce535.Models.Product", b =>

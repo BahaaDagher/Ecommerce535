@@ -1,10 +1,13 @@
 ﻿using Ecommerce535.Data;
 using Ecommerce535.Repositories;
+using Ecommerce535.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce535.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE} , {CD.EMPLOYEE_ROLE}")]
     public class CategoriesController : Controller
     {
         //private readonly  ApplicationDbContext _context = new ApplicationDbContext();
@@ -43,6 +46,7 @@ namespace Ecommerce535.Areas.Admin.Controllers
             TempData["Successful_Notification"] = "category created successfully"; 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE} ")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -56,6 +60,8 @@ namespace Ecommerce535.Areas.Admin.Controllers
             return View(category);
         }
         [HttpPost]
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE}")]
+
         public async Task<IActionResult> Update(Category category)
         {
             //_context.Categories.Update(category);
@@ -64,6 +70,7 @@ namespace Ecommerce535.Areas.Admin.Controllers
             await _categoryRepository.CommitAsync(); 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE}")]
 
         public async Task<IActionResult> Delete(int id)
         {

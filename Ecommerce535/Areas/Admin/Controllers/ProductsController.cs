@@ -1,6 +1,8 @@
 ﻿using Ecommerce535.Data;
 using Ecommerce535.Repositories;
+using Ecommerce535.Utilities;
 using Ecommerce535.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
@@ -8,6 +10,8 @@ using System.Drawing;
 namespace Ecommerce535.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE} , {CD.EMPLOYEE_ROLE}")]
+
     public class ProductsController : Controller
     {
         //private readonly ApplicationDbContext _context = new ApplicationDbContext();

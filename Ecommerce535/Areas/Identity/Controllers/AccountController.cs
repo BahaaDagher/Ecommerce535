@@ -59,7 +59,8 @@ namespace Ecommerce535.Areas.Identity.Controllers
                 "Ecommerce535 Confirmation Mail " ,
                 $"<h1> please click <a href='{link}'> here</a> to confirm Your Mail</h1>"
                 ); 
-            TempData["Successful_Notification"] = "Registration Successfully"; 
+            TempData["Successful_Notification"] = "Registration Successfully";
+            await _userManager.AddToRoleAsync(user, CD.CUSTOMER_ROLE);
             return RedirectToAction(nameof(Login));
         }
         [HttpGet]
@@ -102,7 +103,7 @@ namespace Ecommerce535.Areas.Identity.Controllers
             {
                 if (result.IsLockedOut)
                 {
-                    ModelState.AddModelError("", "too many attempts please try again later");
+                    ModelState.AddModelError("", "your are Locked Right Now please try again later");
                 }
                 else if (result.IsNotAllowed)
                 {
@@ -118,7 +119,12 @@ namespace Ecommerce535.Areas.Identity.Controllers
             TempData["Successful_Notification"] = "Login Successfully";
             return RedirectToAction("Index" , "Home" , new { area = "Customer" });
         }
-
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync(); 
+            return RedirectToAction(nameof(Login));
+        }
         [HttpGet]
         public IActionResult ResendEmailConfirmation()
         {
@@ -234,6 +240,12 @@ namespace Ecommerce535.Areas.Identity.Controllers
                 return View(resetPasswordVM);
             }
             return RedirectToAction(nameof(Login)); 
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
     }

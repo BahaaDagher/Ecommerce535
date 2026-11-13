@@ -1,11 +1,15 @@
 ﻿using Ecommerce535.Data;
 using Ecommerce535.Repositories;
+using Ecommerce535.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce535.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE} , {CD.EMPLOYEE_ROLE}")]
+
     public class BrandsController : Controller
     {
         //private readonly ApplicationDbContext _context = new ApplicationDbContext();
